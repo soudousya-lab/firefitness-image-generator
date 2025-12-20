@@ -13,8 +13,18 @@ from image_generator import generate_image_with_gemini
 import base64
 from datetime import datetime
 
-# 環境変数読み込み
+# 環境変数読み込み（ローカル用）
 load_dotenv(override=True)
+
+# Streamlit Cloud Secrets対応
+# st.secretsがあればos.environに設定（os.getenv()で読めるようにする）
+try:
+    if "GEMINI_API_KEY" in st.secrets:
+        os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    if "ANTHROPIC_API_KEY" in st.secrets:
+        os.environ["ANTHROPIC_API_KEY"] = st.secrets["ANTHROPIC_API_KEY"]
+except Exception:
+    pass  # ローカル環境では st.secrets がないのでスキップ
 
 # ページ設定
 st.set_page_config(
