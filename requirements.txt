@@ -5,7 +5,7 @@ streamlit>=1.28.0
 
 # API クライアント
 anthropic>=0.18.0
-google-generativeai>=0.4.0
+google-genai>=1.0.0
 
 # 環境変数
 python-dotenv>=1.0.0
