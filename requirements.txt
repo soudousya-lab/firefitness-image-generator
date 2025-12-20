@@ -1,0 +1,14 @@
+# FIREFITNESS 画像生成ツール - 必要パッケージ
+
+# Web UI
+streamlit>=1.28.0
+
+# API クライアント
+anthropic>=0.18.0
+google-generativeai>=0.4.0
+
+# 環境変数
+python-dotenv>=1.0.0
+
+# 画像処理（オプション）
+Pillow>=10.0.0

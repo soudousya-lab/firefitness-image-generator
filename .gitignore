@@ -1,0 +1,18 @@
+# 環境変数（APIキー）
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 生成画像
+outputs/*.png
+outputs/*.jpg
+
+# Mac
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
