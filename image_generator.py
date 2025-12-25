@@ -62,19 +62,36 @@ def generate_image_with_gemini(
 
         # 背景画像とトレーナー画像を分類
         bg_images = [img for img in reference_images if img["type"] == "background"]
-        trainer_images = [img for img in reference_images if img["type"] == "trainer"]
+        trainer_images = [img for img in reference_images if img["type"] in ["trainer", "trainer_face"]]
 
         if bg_images:
             image_instructions.append(
-                "IMPORTANT: Use the provided background image as the exact setting/environment. "
-                "Maintain the architectural features, lighting, colors, and atmosphere of this space precisely."
+                "【背景固定 - 絶対厳守】\n"
+                "CRITICAL BACKGROUND INSTRUCTION: The provided background image shows the EXACT room/space to use. "
+                "You MUST preserve ALL elements EXACTLY as they appear:\n"
+                "- DO NOT move, add, remove, or modify ANY furniture (desks, chairs, equipment, shelves)\n"
+                "- DO NOT change the wall colors, flooring, or architectural features\n"
+                "- DO NOT alter the lighting setup or window positions\n"
+                "- DO NOT rearrange or reposition ANY objects in the room\n"
+                "- ONLY add/place people into this UNCHANGED environment\n"
+                "The background must be 100% identical to the reference image - only human subjects are new."
             )
 
         if trainer_images:
             image_instructions.append(
-                "CRITICAL: The trainer in the generated image MUST look EXACTLY like the person in the reference photo(s). "
-                "Maintain their exact facial features, face shape, hairstyle, skin tone, and overall appearance. "
-                "This is essential - the generated trainer must be recognizable as the same person."
+                "【顔の完全再現 - 最重要】\n"
+                "ABSOLUTE REQUIREMENT FOR FACE REPRODUCTION:\n"
+                "Multiple reference photos of the trainer are provided showing different angles and expressions.\n"
+                "You MUST faithfully reproduce this person's face with EXACT accuracy:\n"
+                "- EXACT face shape, jawline, and bone structure\n"
+                "- EXACT eye shape, eye size, eye spacing, and eyebrow shape\n"
+                "- EXACT nose shape, size, and bridge\n"
+                "- EXACT mouth shape and lip thickness\n"
+                "- EXACT skin tone and any distinguishing features\n"
+                "- EXACT hairstyle, hair color, and hairline\n"
+                "The generated face must be IMMEDIATELY RECOGNIZABLE as the same person from the reference photos.\n"
+                "The POSE and BODY POSITION can differ from reference photos - only the FACE must match exactly.\n"
+                "This is a real person whose likeness must be preserved - do not generalize or stylize the facial features."
             )
 
         # プロンプトに日本人指定を追加
@@ -93,7 +110,12 @@ def generate_image_with_gemini(
         contents.append(full_prompt)
 
         # 参照画像を追加（トレーナーを先に、背景を後に）
-        for img_info in trainer_images + bg_images:
+        # APIの制限を考慮してトレーナー画像は最大3枚に制限
+        limited_trainer_images = trainer_images[:3] if len(trainer_images) > 3 else trainer_images
+        if len(trainer_images) > 3:
+            print(f"   ⚠️ トレーナー画像を{len(trainer_images)}枚から3枚に制限しました")
+
+        for img_info in limited_trainer_images + bg_images:
             image_path = img_info["path"]
             if isinstance(image_path, str):
                 image_path = Path(image_path)
@@ -115,9 +137,9 @@ def generate_image_with_gemini(
                 contents.append(types.Part.from_bytes(data=image_bytes, mime_type=mime_type))
                 print(f"   📎 参照画像追加: {img_info['type']} - {image_path.name}")
 
-        print(f"📤 Nano Banana Pro (gemini-3-pro-image-preview) にリクエスト送信中...")
+        print(f"📤 Gemini にリクエスト送信中...")
         print(f"   アスペクト比: {aspect_ratio}")
-        print(f"   参照画像数: {len(trainer_images + bg_images)}")
+        print(f"   参照画像数: {len(limited_trainer_images + bg_images)} (トレーナー: {len(limited_trainer_images)}, 背景: {len(bg_images)})")
 
         # Nano Banana Pro で画像生成
         response = client.models.generate_content(

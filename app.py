@@ -12,6 +12,7 @@ from prompt_converter import convert_prompt_with_claude, convert_sns_prompt_with
 from image_generator import generate_image_with_gemini
 import base64
 from datetime import datetime
+from PIL import Image
 
 # 環境変数読み込み（ローカル用）
 load_dotenv(override=True)
@@ -67,8 +68,8 @@ st.markdown("""
     section[data-testid="stSidebar"] .stMultiSelect label,
     section[data-testid="stSidebar"] .stCheckbox label,
     section[data-testid="stSidebar"] .stRadio label {
-        color: #b8c9d9 !important;
-        font-weight: 400;
+        color: #ffffff !important;
+        font-weight: 500;
     }
 
     section[data-testid="stSidebar"] hr {
@@ -91,9 +92,9 @@ st.markdown("""
     }
 
     .sub-header {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.85);
         font-size: 0.95rem;
-        font-weight: 300;
+        font-weight: 400;
         letter-spacing: 0.03em;
         margin-bottom: 2rem;
     }
@@ -105,7 +106,7 @@ st.markdown("""
     }
 
     .stMarkdown p, .stMarkdown li {
-        color: #d0dbe6;
+        color: #ffffff;
     }
 
     /* ===== タブ ===== */
@@ -181,8 +182,8 @@ st.markdown("""
     .stTextArea label,
     .stSlider label,
     .stCheckbox label {
-        color: #b8c9d9 !important;
-        font-weight: 400;
+        color: #ffffff !important;
+        font-weight: 500;
         font-size: 0.9rem;
     }
 
@@ -192,9 +193,27 @@ st.markdown("""
         color: rgba(184, 201, 217, 0.5) !important;
     }
 
-    /* チェックボックス */
-    .stCheckbox > label > span {
-        color: #d0dbe6 !important;
+    /* チェックボックス - ラベルテキストを白色に強制 */
+    .stCheckbox label,
+    .stCheckbox label span,
+    .stCheckbox label p,
+    .stCheckbox > label > span,
+    .stCheckbox [data-testid="stCheckbox"] label,
+    div[data-testid="stCheckbox"] label,
+    div[data-testid="stCheckbox"] label span,
+    div[data-testid="stCheckbox"] p {
+        color: #ffffff !important;
+    }
+
+    /* ラジオボタン - ラベルテキストを白色に強制 */
+    .stRadio label,
+    .stRadio label span,
+    .stRadio label p,
+    .stRadio > label > span,
+    div[data-testid="stRadio"] label,
+    div[data-testid="stRadio"] label span,
+    div[data-testid="stRadio"] p {
+        color: #ffffff !important;
     }
 
     /* スライダー */
@@ -309,6 +328,34 @@ st.markdown("""
         border-radius: 6px !important;
     }
 
+    /* ===== 全般的なテキスト要素を白色に ===== */
+    .stCaption,
+    .stCaption p,
+    div[data-testid="stCaptionContainer"] p,
+    .element-container p,
+    .stMarkdown small,
+    .stMarkdown em {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* ヘルプテキスト */
+    .stTooltipIcon,
+    div[data-testid="tooltipHoverTarget"] {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    /* 全てのspan, pタグのデフォルト色 */
+    .main .block-container span,
+    .main .block-container p {
+        color: #ffffff;
+    }
+
+    /* セレクトボックスの選択値 */
+    .stSelectbox > div > div,
+    .stMultiSelect > div > div {
+        color: #ffffff !important;
+    }
+
     /* ===== 画像 ===== */
     .stImage {
         border-radius: 8px;
@@ -322,7 +369,16 @@ st.markdown("""
     }
 
     .stRadio > div > label {
-        color: #d0dbe6 !important;
+        color: #ffffff !important;
+    }
+
+    .stRadio > div > label > div {
+        color: #ffffff !important;
+    }
+
+    /* ラジオボタンのオプションテキスト */
+    .stRadio [data-baseweb="radio"] > div {
+        color: #ffffff !important;
     }
 
     /* ===== カスタムクラス ===== */
@@ -341,13 +397,13 @@ st.markdown("""
     }
 
     .muted-text {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.8);
         font-size: 0.85rem;
     }
 
     /* フッター */
     .footer-text {
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.8rem;
         text-align: center;
         padding: 2rem 0;
@@ -373,7 +429,39 @@ st.markdown("""
     }
 
     [data-baseweb="menu"] li {
-        color: #e8eef4 !important;
+        color: #ffffff !important;
+    }
+
+    /* セレクトボックスの選択されたテキスト */
+    .stSelectbox [data-baseweb="select"] > div {
+        color: #ffffff !important;
+    }
+
+    /* セレクトボックスのプレースホルダーとテキスト */
+    [data-baseweb="select"] span {
+        color: #ffffff !important;
+    }
+
+    /* Expander内のテキスト */
+    .streamlit-expanderContent p,
+    .streamlit-expanderContent li,
+    .streamlit-expanderContent span {
+        color: #ffffff !important;
+    }
+
+    /* info, success, warning, errorメッセージ内のテキスト */
+    .stAlert p {
+        color: #ffffff !important;
+    }
+
+    /* スライダーの値表示 */
+    .stSlider > div > div > div > span {
+        color: #ffffff !important;
+    }
+
+    /* トグルボタンのテキスト */
+    .stToggle label span {
+        color: #ffffff !important;
     }
 
     [data-baseweb="menu"] li:hover {
@@ -884,6 +972,79 @@ BRAND_COLORS = {
 }
 
 # =====================================
+# ブログ投稿用定義
+# =====================================
+
+# ブログ記事カテゴリ
+BLOG_CATEGORIES = {
+    "ダイエット・体重管理": "diet",
+    "姿勢改善・体の歪み": "posture",
+    "筋力トレーニング": "strength",
+    "食事・栄養": "nutrition",
+    "運動習慣・継続のコツ": "habit",
+    "お客様の声・成功事例": "testimonial",
+    "健康・ウェルネス": "wellness",
+    "よくある質問": "faq",
+    "トレーナー紹介": "trainer",
+    "施設・サービス紹介": "facility"
+}
+
+# ブログ記事トーン
+BLOG_TONES = {
+    "専門的・信頼感": "professional",
+    "親しみやすい・カジュアル": "friendly",
+    "やる気を引き出す・モチベーション": "motivational",
+    "教育的・わかりやすい": "educational"
+}
+
+# ブログ記事構成テンプレート
+BLOG_STRUCTURES = {
+    "問題提起→解決策": {
+        "description": "読者の悩みを明確にし、解決策を提示する構成",
+        "sections": ["導入（問題提起）", "原因の説明", "解決策", "実践のポイント", "まとめ・CTA"]
+    },
+    "ハウツー・手順説明": {
+        "description": "ステップバイステップで方法を説明する構成",
+        "sections": ["導入", "準備・前提条件", "手順1", "手順2", "手順3", "注意点", "まとめ"]
+    },
+    "比較・検討": {
+        "description": "複数の選択肢を比較し、最適解を提示する構成",
+        "sections": ["導入", "選択肢Aの説明", "選択肢Bの説明", "比較表", "おすすめ", "まとめ"]
+    },
+    "お客様事例紹介": {
+        "description": "実際のお客様の変化・成功を紹介する構成",
+        "sections": ["導入", "お客様の悩み", "取り組み内容", "結果・変化", "お客様の声", "まとめ・CTA"]
+    },
+    "Q&A形式": {
+        "description": "よくある質問に答える形式の構成",
+        "sections": ["導入", "Q1", "Q2", "Q3", "Q4", "Q5", "まとめ"]
+    }
+}
+
+# ブログ記事の長さ
+BLOG_LENGTHS = {
+    "短め（800〜1200字）": "short",
+    "標準（1500〜2000字）": "medium",
+    "長め（2500〜3500字）": "long"
+}
+
+# キーワード（SEO用）
+BLOG_KEYWORDS = [
+    "パーソナルトレーニング",
+    "岡山 ジム",
+    "ダイエット",
+    "姿勢改善",
+    "3軸診断",
+    "筋トレ",
+    "体重管理",
+    "健康",
+    "運動習慣",
+    "個室ジム",
+    "マンツーマン指導",
+    "食事指導"
+]
+
+# =====================================
 # ヘルパー関数
 # =====================================
 
@@ -919,6 +1080,9 @@ ICONS = {
     "zap": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>''',
     "check": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>''',
     "sparkles": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>''',
+    "send": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>''',
+    "file-text": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>''',
+    "globe": '''<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>''',
 }
 
 
@@ -953,6 +1117,66 @@ def load_image_as_base64(image_path: Path) -> str:
         return base64.b64encode(f.read()).decode()
 
 
+def overlay_logo_on_image(image_path: str, logo_path: Path, position: str = "右下", size: str = "中", padding: int = 20) -> str:
+    """生成画像にロゴを重ねる
+
+    Args:
+        image_path: 生成された画像のパス
+        logo_path: ロゴ画像のパス
+        position: ロゴの位置（左上、中央上、右上、左中央、中央、右中央、左下、中央下、右下）
+        size: ロゴサイズ（極小、小、中、大、極大）
+        padding: 端からの余白（ピクセル）
+
+    Returns:
+        ロゴを重ねた画像の保存パス
+    """
+    # 画像を開く
+    base_image = Image.open(image_path).convert("RGBA")
+    logo = Image.open(logo_path).convert("RGBA")
+
+    # サイズ比率を決定（画像の短辺に対する割合）
+    size_ratios = {
+        "極小": 0.08,
+        "小": 0.12,
+        "中": 0.18,
+        "大": 0.25,
+        "極大": 0.35
+    }
+    ratio = size_ratios.get(size, 0.18)
+
+    # ロゴをリサイズ
+    base_short_side = min(base_image.width, base_image.height)
+    target_width = int(base_short_side * ratio)
+    logo_aspect = logo.height / logo.width
+    target_height = int(target_width * logo_aspect)
+    logo = logo.resize((target_width, target_height), Image.Resampling.LANCZOS)
+
+    # 位置を計算
+    positions = {
+        "左上": (padding, padding),
+        "中央上": ((base_image.width - logo.width) // 2, padding),
+        "右上": (base_image.width - logo.width - padding, padding),
+        "左中央": (padding, (base_image.height - logo.height) // 2),
+        "中央": ((base_image.width - logo.width) // 2, (base_image.height - logo.height) // 2),
+        "右中央": (base_image.width - logo.width - padding, (base_image.height - logo.height) // 2),
+        "左下": (padding, base_image.height - logo.height - padding),
+        "中央下": ((base_image.width - logo.width) // 2, base_image.height - logo.height - padding),
+        "右下": (base_image.width - logo.width - padding, base_image.height - logo.height - padding)
+    }
+    pos = positions.get(position, positions["右下"])
+
+    # ロゴを合成
+    base_image.paste(logo, pos, logo)
+
+    # RGBAからRGBに変換してPNGで保存
+    output_path = image_path.replace(".png", "_with_logo.png")
+    base_image_rgb = Image.new("RGB", base_image.size, (255, 255, 255))
+    base_image_rgb.paste(base_image, mask=base_image.split()[3] if base_image.mode == "RGBA" else None)
+    base_image_rgb.save(output_path, "PNG")
+
+    return output_path
+
+
 # =====================================
 # 宣材写真モード
 # =====================================
@@ -960,12 +1184,19 @@ def load_image_as_base64(image_path: Path) -> str:
 def render_promo_photo_mode():
     """宣材写真生成モードのUI"""
 
-    # サイドバー：設定
-    with st.sidebar:
-        section_header("settings", "基本設定")
+    st.markdown(f'''
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        {icon("camera", "#ff6b35", 22)}
+        <span style="color: #ffffff; font-size: 1.1rem; font-weight: 500;">宣材写真を生成</span>
+    </div>
+    ''', unsafe_allow_html=True)
 
-        # 店舗選択
-        section_header("building", "店舗（背景）")
+    # メインエリア - 3カラム構成
+    col_left, col_center, col_right = st.columns([1, 1, 1])
+
+    # 左カラム: 基本設定
+    with col_left:
+        section_header("building", "店舗・背景")
         selected_location = st.selectbox(
             "店舗を選択",
             options=list(LOCATIONS.keys()),
@@ -1010,25 +1241,54 @@ def render_promo_photo_mode():
 
             if trainer_images:
                 selected_trainer = st.multiselect(
-                    "参照画像を選択（複数可）",
+                    "顔参照画像を選択（複数可）",
                     options=trainer_images,
                     format_func=lambda x: x.name,
-                    default=[trainer_images[0]] if trainer_images else [],
+                    default=trainer_images,
                     key="promo_trainer_images"
                 )
-
-                if selected_trainer:
-                    cols = st.columns(min(len(selected_trainer), 2))
-                    for i, img in enumerate(selected_trainer[:2]):
-                        with cols[i]:
-                            st.image(str(img), caption=img.name, use_container_width=True)
             else:
                 st.warning(f"トレーナー画像がありません: {trainer_dir}")
 
-    # メインエリア
-    col1, col2 = st.columns([1, 1])
+        st.divider()
 
-    with col1:
+        # ロゴ設定
+        section_header("fire", "ロゴ設定")
+        use_logo = st.checkbox("ロゴを重ねる", value=True, key="promo_use_logo")
+
+        selected_logo = None
+        logo_position = "右下"
+        logo_size = "中"
+
+        if use_logo:
+            logo_images = get_available_images(LOGOS_DIR)
+
+            if logo_images:
+                selected_logo = st.selectbox(
+                    "ロゴを選択",
+                    options=logo_images,
+                    format_func=lambda x: x.name,
+                    key="promo_logo"
+                )
+
+                logo_position = st.selectbox(
+                    "ロゴの位置",
+                    options=["左上", "中央上", "右上", "左中央", "中央", "右中央", "左下", "中央下", "右下"],
+                    index=8,  # 右下デフォルト
+                    key="promo_logo_position"
+                )
+                logo_size = st.selectbox(
+                    "ロゴサイズ",
+                    options=["極小", "小", "中", "大", "極大"],
+                    index=2,  # 中デフォルト
+                    key="promo_logo_size"
+                )
+            else:
+                st.warning(f"ロゴ画像がありません。assets/logos/ にロゴを配置してください。")
+                use_logo = False
+
+    # 中央カラム: 画像設定
+    with col_center:
         section_header("image", "画像設定")
 
         # シチュエーション
@@ -1084,7 +1344,8 @@ def render_promo_photo_mode():
                 key="promo_mood"
             )
 
-    with col2:
+    # 右カラム: プレビュー
+    with col_right:
         section_header("sparkles", "生成プレビュー")
 
         # 入力情報のサマリー
@@ -1128,7 +1389,10 @@ def render_promo_photo_mode():
             additional_prompt=additional_prompt,
             image_text=image_text if include_text else None,
             mood=mood,
-            selected_bg=selected_bg
+            selected_bg=selected_bg,
+            logo_path=selected_logo if use_logo else None,
+            logo_position=logo_position,
+            logo_size=logo_size
         )
 
 
@@ -1146,22 +1410,26 @@ def render_sns_post_mode():
     </div>
     ''', unsafe_allow_html=True)
 
-    # サイドバー
-    with st.sidebar:
-        section_header("sliders", "SNS投稿設定")
+    # 上部の設定エリア
+    settings_col1, settings_col2, settings_col3 = st.columns([1, 1, 1])
+
+    with settings_col1:
+        section_header("sliders", "プラットフォーム")
 
         # プラットフォーム選択
         platform = st.radio(
             "投稿先プラットフォーム",
             options=["Google Map", "Instagram（単体）", "Instagram（複数ページ）"],
-            key="sns_platform"
+            key="sns_platform",
+            horizontal=True
         )
 
         # Instagram複数ページモードの場合
-        if platform == "Instagram（複数ページ）":
-            st.divider()
-            section_header("grid", "ページ構成")
+        selected_pages = None
+        selected_theme = None
+        selected_post_type = None
 
+        if platform == "Instagram（複数ページ）":
             # ページ構成プリセット
             page_preset = st.selectbox(
                 "ページ構成",
@@ -1172,7 +1440,6 @@ def render_sns_post_mode():
 
             # 選択されたページ
             selected_pages = PAGE_PRESETS[page_preset]
-            st.info(f"生成ページ: {len(selected_pages)}ページ")
 
             # テーマ選択
             selected_theme = st.selectbox(
@@ -1193,29 +1460,42 @@ def render_sns_post_mode():
                 key="sns_post_type"
             )
 
-        st.divider()
+    with settings_col2:
+        section_header("fire", "ロゴ設定")
+        include_logo = st.checkbox("ロゴを重ねる", value=True, key="sns_include_logo")
 
-        # ロゴ設定
-        section_header("fire", "FIREFITNESSロゴ")
-        include_logo = st.checkbox("ロゴを必ず含める", value=True, key="sns_include_logo")
+        selected_logo = None
+        logo_position = "右下"
+        logo_size = "中"
 
         if include_logo:
-            logo_position = st.selectbox(
-                "ロゴの位置",
-                options=list(TEXT_POSITIONS.keys()),
-                index=6,  # 右下デフォルト
-                key="sns_logo_position"
-            )
-            logo_size = st.selectbox(
-                "ロゴサイズ",
-                options=list(TEXT_SIZES.keys()),
-                index=2,  # 中デフォルト
-                key="sns_logo_size"
-            )
+            logo_images = get_available_images(LOGOS_DIR)
 
-        st.divider()
+            if logo_images:
+                selected_logo = st.selectbox(
+                    "ロゴを選択",
+                    options=logo_images,
+                    format_func=lambda x: x.name,
+                    key="sns_logo"
+                )
 
-        # トレーナー写真
+                logo_position = st.selectbox(
+                    "ロゴの位置",
+                    options=["左上", "中央上", "右上", "左中央", "中央", "右中央", "左下", "中央下", "右下"],
+                    index=8,  # 右下デフォルト
+                    key="sns_logo_position"
+                )
+                logo_size = st.selectbox(
+                    "ロゴサイズ",
+                    options=["極小", "小", "中", "大", "極大"],
+                    index=2,  # 中デフォルト
+                    key="sns_logo_size"
+                )
+            else:
+                st.warning(f"ロゴ画像がありません")
+                include_logo = False
+
+    with settings_col3:
         section_header("user", "トレーナー写真")
         include_trainer_photo = st.checkbox("トレーナー写真を含める", value=False, key="sns_include_trainer")
 
@@ -1235,10 +1515,10 @@ def render_sns_post_mode():
 
             if trainer_images:
                 selected_trainer = st.multiselect(
-                    "参照画像を選択",
+                    "顔参照画像を選択（複数可）",
                     options=trainer_images,
                     format_func=lambda x: x.name,
-                    default=[trainer_images[0]] if trainer_images else [],
+                    default=trainer_images,
                     key="sns_trainer_images"
                 )
 
@@ -1247,6 +1527,8 @@ def render_sns_post_mode():
                     options=["円形切り抜き", "四角形", "全身", "上半身のみ"],
                     key="sns_trainer_style"
                 )
+
+    st.divider()
 
     # ====================================
     # Instagram複数ページモード
@@ -1330,7 +1612,7 @@ def render_sns_post_mode():
         st.divider()
 
         # サブテキスト
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">サブテキスト</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">サブテキスト</p>', unsafe_allow_html=True)
 
         subtext_category = st.selectbox(
             "サブテキストのカテゴリ",
@@ -1364,7 +1646,7 @@ def render_sns_post_mode():
         st.divider()
 
         # アクセントテキスト
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">アクセント</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">アクセント</p>', unsafe_allow_html=True)
 
         accent_text = st.selectbox(
             "アクセントテキスト",
@@ -1385,7 +1667,7 @@ def render_sns_post_mode():
         section_header("palette", "デザイン設定")
 
         # レイアウトスタイル
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">レイアウト</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">レイアウト</p>', unsafe_allow_html=True)
         layout_style = st.selectbox(
             "レイアウトスタイル",
             options=list(LAYOUT_STYLES.keys()),
@@ -1395,7 +1677,7 @@ def render_sns_post_mode():
         st.divider()
 
         # 背景設定
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">背景</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">背景</p>', unsafe_allow_html=True)
         background_style = st.selectbox(
             "背景スタイル",
             options=list(BACKGROUND_STYLES.keys()),
@@ -1444,7 +1726,7 @@ def render_sns_post_mode():
         st.divider()
 
         # 図解・アイコン設定
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">図解・アイコン</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">図解・アイコン</p>', unsafe_allow_html=True)
         icon_type = st.selectbox(
             "アイコンタイプ",
             options=ICON_TYPES,
@@ -1455,7 +1737,7 @@ def render_sns_post_mode():
         st.divider()
 
         # アスペクト比
-        st.markdown('<p style="color: #b8c9d9; font-size: 0.9rem; margin-bottom: 0.5rem;">サイズ</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">サイズ</p>', unsafe_allow_html=True)
         selected_ratio = st.selectbox(
             "アスペクト比",
             options=list(ASPECT_RATIOS.keys()),
@@ -1601,7 +1883,10 @@ def render_sns_post_mode():
             aspect_ratio=ASPECT_RATIOS[selected_ratio],
             trainer_name=selected_trainer_name if include_trainer_photo else None,
             trainer_images=selected_trainer if include_trainer_photo else [],
-            selected_bg=selected_bg
+            selected_bg=selected_bg,
+            logo_path=selected_logo if include_logo else None,
+            logo_position=logo_position,
+            logo_size=logo_size
         )
 
 
@@ -2003,7 +2288,8 @@ def render_instagram_multipage_mode(
 # =====================================
 
 def run_generation(mode, location, situation, trainer_name, trainer_images, client,
-                   aspect_ratio, additional_prompt, image_text, mood, selected_bg):
+                   aspect_ratio, additional_prompt, image_text, mood, selected_bg,
+                   logo_path=None, logo_position="右下", logo_size="中"):
     """宣材写真の生成処理"""
 
     print("=" * 50)
@@ -2035,13 +2321,13 @@ def run_generation(mode, location, situation, trainer_name, trainer_images, clie
             "description": f"{location}の店舗背景"
         })
 
-    # トレーナー画像
+    # トレーナー画像（顔の再現用）
     if trainer_name and trainer_images:
         for img in trainer_images:
             reference_images.append({
                 "path": img,
-                "type": "trainer",
-                "description": f"トレーナー{trainer_name}"
+                "type": "trainer_face",
+                "description": f"トレーナー{trainer_name}の顔を再現するための参照画像（様々な角度・表情）。ポーズや構図はプロンプトに従い、顔の特徴のみ参照すること"
             })
 
     with st.spinner("プロンプトを最適化中..."):
@@ -2073,9 +2359,23 @@ def run_generation(mode, location, situation, trainer_name, trainer_images, clie
             if result["success"]:
                 st.success("画像生成が完了しました")
 
-                st.image(result["image_path"], caption="生成された画像", use_container_width=True)
+                # ロゴを重ねる処理
+                final_image_path = result["image_path"]
+                if logo_path:
+                    try:
+                        final_image_path = overlay_logo_on_image(
+                            result["image_path"],
+                            logo_path,
+                            logo_position,
+                            logo_size
+                        )
+                        st.info("ロゴを追加しました")
+                    except Exception as e:
+                        st.warning(f"ロゴの追加に失敗しました: {str(e)}")
 
-                with open(result["image_path"], "rb") as f:
+                st.image(final_image_path, caption="生成された画像", use_container_width=True)
+
+                with open(final_image_path, "rb") as f:
                     st.download_button(
                         label="画像をダウンロード",
                         data=f,
@@ -2095,7 +2395,8 @@ def run_generation(mode, location, situation, trainer_name, trainer_images, clie
             st.code(traceback.format_exc())
 
 
-def run_sns_generation(sns_params, aspect_ratio, trainer_name, trainer_images, selected_bg):
+def run_sns_generation(sns_params, aspect_ratio, trainer_name, trainer_images, selected_bg,
+                       logo_path=None, logo_position="右下", logo_size="中"):
     """SNS投稿画像の生成処理"""
 
     print("=" * 50)
@@ -2114,13 +2415,13 @@ def run_sns_generation(sns_params, aspect_ratio, trainer_name, trainer_images, s
             "description": "店舗背景"
         })
 
-    # トレーナー画像
+    # トレーナー画像（顔の再現用）
     if trainer_name and trainer_images:
         for img in trainer_images:
             reference_images.append({
                 "path": img,
-                "type": "trainer",
-                "description": f"トレーナー{trainer_name}"
+                "type": "trainer_face",
+                "description": f"トレーナー{trainer_name}の顔を再現するための参照画像（様々な角度・表情）。ポーズや構図はプロンプトに従い、顔の特徴のみ参照すること"
             })
 
     with st.spinner("SNS投稿用プロンプトを生成中..."):
@@ -2152,11 +2453,25 @@ def run_sns_generation(sns_params, aspect_ratio, trainer_name, trainer_images, s
             if result["success"]:
                 st.success("SNS投稿画像の生成が完了しました")
 
-                st.image(result["image_path"], caption="生成されたSNS投稿画像", use_container_width=True)
+                # ロゴを重ねる処理
+                final_image_path = result["image_path"]
+                if logo_path:
+                    try:
+                        final_image_path = overlay_logo_on_image(
+                            result["image_path"],
+                            logo_path,
+                            logo_position,
+                            logo_size
+                        )
+                        st.info("ロゴを追加しました")
+                    except Exception as e:
+                        st.warning(f"ロゴの追加に失敗しました: {str(e)}")
+
+                st.image(final_image_path, caption="生成されたSNS投稿画像", use_container_width=True)
 
                 # ファイル名に投稿タイプを含める
                 platform = sns_params.get("platform", "sns").replace(" ", "_").lower()
-                with open(result["image_path"], "rb") as f:
+                with open(final_image_path, "rb") as f:
                     st.download_button(
                         label="画像をダウンロード",
                         data=f,
@@ -2184,6 +2499,557 @@ def run_sns_generation(sns_params, aspect_ratio, trainer_name, trainer_images, s
             st.error(f"画像生成エラー: {str(e)}")
             import traceback
             st.code(traceback.format_exc())
+
+
+# =====================================
+# ブログ投稿モード
+# =====================================
+
+def render_blog_post_mode():
+    """ブログ記事生成・投稿モードのUI"""
+
+    st.markdown(f'''
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        {icon("file-text", "#ff6b35", 22)}
+        <span style="color: #ffffff; font-size: 1.1rem; font-weight: 500;">ブログ記事を選択肢から作成して投稿</span>
+    </div>
+    ''', unsafe_allow_html=True)
+
+    # メインエリア - 3カラム構成
+    col_left, col_center, col_right = st.columns([1, 1, 1])
+
+    # 左カラム: 記事設定
+    with col_left:
+        section_header("settings", "ブログ記事設定")
+
+        # カテゴリ選択
+        selected_category = st.selectbox(
+            "記事カテゴリ",
+            options=list(BLOG_CATEGORIES.keys()),
+            key="blog_category"
+        )
+
+        # 構成テンプレート
+        selected_structure = st.selectbox(
+            "構成テンプレート",
+            options=list(BLOG_STRUCTURES.keys()),
+            key="blog_structure"
+        )
+
+        # 構成の説明を表示
+        structure_info = BLOG_STRUCTURES[selected_structure]
+        st.caption(f"{structure_info['description']}")
+
+        # トーン・スタイル
+        selected_tone = st.selectbox(
+            "文章のトーン",
+            options=list(BLOG_TONES.keys()),
+            key="blog_tone"
+        )
+
+        # 記事の長さ
+        selected_length = st.selectbox(
+            "記事の長さ",
+            options=list(BLOG_LENGTHS.keys()),
+            key="blog_length"
+        )
+
+        st.divider()
+
+        # 投稿先設定
+        section_header("globe", "投稿先設定")
+        blog_url = st.text_input(
+            "ブログ投稿先URL",
+            placeholder="https://example.com/wp-json/wp/v2/posts",
+            help="WordPress REST API エンドポイントなど",
+            key="blog_url"
+        )
+
+        blog_username = ""
+        blog_password = ""
+        if blog_url:
+            blog_username = st.text_input(
+                "ユーザー名",
+                key="blog_username"
+            )
+            blog_password = st.text_input(
+                "パスワード/アプリケーションパスワード",
+                type="password",
+                key="blog_password"
+            )
+
+    # 中央カラム: 記事内容設定
+    with col_center:
+        section_header("type", "記事内容設定")
+
+        # テーマから見出しを選択
+        if selected_category in HEADLINE_TEMPLATES:
+            available_topics = HEADLINE_TEMPLATES[selected_category]
+        else:
+            # カテゴリに対応するトピックを動的に生成
+            available_topics = get_blog_topics_for_category(selected_category)
+
+        selected_topic = st.selectbox(
+            "記事トピック",
+            options=available_topics,
+            key="blog_topic"
+        )
+
+        # タイトル（自動生成 or カスタム）
+        title_mode = st.radio(
+            "タイトル設定",
+            options=["AIが自動生成", "カスタム入力"],
+            horizontal=True,
+            key="blog_title_mode"
+        )
+
+        if title_mode == "カスタム入力":
+            custom_title = st.text_input(
+                "記事タイトル",
+                placeholder="例：【初心者向け】3ヶ月で-5kg達成するための3つのポイント",
+                key="blog_custom_title"
+            )
+        else:
+            custom_title = None
+
+        st.divider()
+
+        # SEOキーワード
+        st.markdown('<p style="color: #ffffff; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">SEOキーワード</p>', unsafe_allow_html=True)
+        selected_keywords = st.multiselect(
+            "含めるキーワードを選択",
+            options=BLOG_KEYWORDS,
+            default=["パーソナルトレーニング", "岡山 ジム"],
+            key="blog_keywords"
+        )
+
+        # 追加キーワード
+        additional_keywords = st.text_input(
+            "追加キーワード（カンマ区切り）",
+            placeholder="例：運動初心者, 体重減少",
+            key="blog_additional_keywords"
+        )
+
+        st.divider()
+
+        # 追加の指示
+        section_header("sparkles", "追加の指示")
+        additional_instructions = st.text_area(
+            "AI への追加指示",
+            placeholder="例：具体的な数値を多く入れてください、FIREFITNESSの3軸診断について詳しく触れてください",
+            height=100,
+            key="blog_additional_instructions"
+        )
+
+    # 右カラム: プレビュー
+    with col_right:
+        section_header("book", "記事構成プレビュー")
+
+        # 構成セクションを表示
+        st.markdown("**記事の構成:**")
+        for i, section in enumerate(structure_info["sections"]):
+            st.markdown(f"{i+1}. {section}")
+
+        st.divider()
+
+        # 設定サマリー
+        st.markdown("**現在の設定:**")
+        summary_items = [
+            f"カテゴリ: {selected_category}",
+            f"トピック: {selected_topic}",
+            f"構成: {selected_structure}",
+            f"トーン: {selected_tone}",
+            f"長さ: {selected_length}",
+        ]
+        if selected_keywords:
+            summary_items.append(f"キーワード: {', '.join(selected_keywords[:3])}...")
+
+        for item in summary_items:
+            st.markdown(f"- {item}")
+
+        # 投稿先の状態
+        st.divider()
+        if blog_url:
+            st.success(f"投稿先: {blog_url[:30]}...")
+        else:
+            st.info("投稿先URLを設定すると、生成した記事を直接投稿できます")
+
+    st.divider()
+
+    # 生成・投稿ボタン
+    col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 1])
+
+    with col_btn1:
+        generate_only = st.button(
+            "記事を生成（プレビュー）",
+            use_container_width=True,
+            key="blog_generate"
+        )
+
+    with col_btn2:
+        generate_and_post = st.button(
+            "生成して投稿",
+            use_container_width=True,
+            type="primary",
+            disabled=not blog_url,
+            key="blog_generate_post"
+        )
+
+    with col_btn3:
+        if st.button("テンプレートをリセット", key="blog_reset"):
+            st.rerun()
+
+    # 生成処理
+    if generate_only or generate_and_post:
+        run_blog_generation(
+            category=selected_category,
+            topic=selected_topic,
+            structure=selected_structure,
+            structure_info=structure_info,
+            tone=selected_tone,
+            length=selected_length,
+            custom_title=custom_title,
+            keywords=selected_keywords,
+            additional_keywords=additional_keywords,
+            additional_instructions=additional_instructions,
+            should_post=generate_and_post,
+            blog_url=blog_url if generate_and_post else None,
+            blog_username=blog_username if generate_and_post and blog_url else None,
+            blog_password=blog_password if generate_and_post and blog_url else None
+        )
+
+
+def get_blog_topics_for_category(category: str) -> list:
+    """カテゴリに基づいてブログトピックを取得"""
+    topics_map = {
+        "ダイエット・体重管理": [
+            "食べないダイエットが失敗する理由",
+            "リバウンドを繰り返す人の共通点",
+            "40代からのダイエットが難しい理由",
+            "健康的に痩せるペースとは",
+            "停滞期の乗り越え方"
+        ],
+        "姿勢改善・体の歪み": [
+            "デスクワークで姿勢が悪くなる理由",
+            "猫背を治すと印象が変わる",
+            "肩こり・腰痛と姿勢の関係",
+            "反り腰チェック方法",
+            "姿勢改善で得られるメリット"
+        ],
+        "筋力トレーニング": [
+            "筋トレ初心者が最初にやるべきこと",
+            "週何回筋トレすればいい？",
+            "自重トレーニングと器具トレーニングの違い",
+            "筋トレと有酸素運動の組み合わせ方",
+            "年齢別おすすめトレーニング"
+        ],
+        "食事・栄養": [
+            "タンパク質、足りてますか？",
+            "プロテインは必要？",
+            "コンビニで選ぶ高タンパク食",
+            "外食でも太らない選び方",
+            "朝食を抜くとどうなる？"
+        ],
+        "運動習慣・継続のコツ": [
+            "運動が苦手でも大丈夫",
+            "週何回運動すればいい？",
+            "運動を習慣化するコツ",
+            "「時間がない」を解決する方法",
+            "モチベーションが続かない時の対処法"
+        ],
+        "お客様の声・成功事例": [
+            "3ヶ月で-5kg達成された○○様",
+            "姿勢改善で肩こりが解消した事例",
+            "運動習慣が身についたお客様の声",
+            "体型変化を実感されたお客様",
+            "リバウンドしなくなった事例"
+        ],
+        "健康・ウェルネス": [
+            "運動と睡眠の関係",
+            "ストレス解消と運動の効果",
+            "健康診断の数値を改善する方法",
+            "自律神経を整える運動",
+            "免疫力を高める生活習慣"
+        ],
+        "よくある質問": [
+            "どれくらいで効果が出る？",
+            "運動経験がなくても大丈夫？",
+            "食事制限は厳しい？",
+            "週1回でも効果はある？",
+            "無料カウンセリングの内容は？"
+        ],
+        "トレーナー紹介": [
+            "トレーナーになった理由",
+            "得意な指導スタイル",
+            "お客様へのメッセージ",
+            "資格・経歴紹介",
+            "トレーニングへのこだわり"
+        ],
+        "施設・サービス紹介": [
+            "完全個室でプライベート空間",
+            "最新のトレーニング機器",
+            "清潔で快適な空間",
+            "アクセス・駐車場情報",
+            "料金プランのご案内"
+        ]
+    }
+    return topics_map.get(category, ["トピックを入力してください"])
+
+
+def run_blog_generation(
+    category, topic, structure, structure_info, tone, length,
+    custom_title, keywords, additional_keywords, additional_instructions,
+    should_post, blog_url, blog_username, blog_password
+):
+    """ブログ記事の生成・投稿処理"""
+
+    print("=" * 50)
+    print("📝 ブログ記事生成開始")
+    print("=" * 50)
+
+    # キーワードを結合
+    all_keywords = keywords.copy() if keywords else []
+    if additional_keywords:
+        all_keywords.extend([k.strip() for k in additional_keywords.split(",")])
+
+    # ブログ生成パラメータ
+    blog_params = {
+        "category": category,
+        "topic": topic,
+        "structure": structure,
+        "sections": structure_info["sections"],
+        "tone": BLOG_TONES.get(tone, "professional"),
+        "length": BLOG_LENGTHS.get(length, "medium"),
+        "custom_title": custom_title,
+        "keywords": all_keywords,
+        "additional_instructions": additional_instructions
+    }
+
+    with st.spinner("ブログ記事を生成中..."):
+        try:
+            # Claude APIでブログ記事を生成
+            generated_content = generate_blog_with_claude(blog_params)
+
+            if generated_content.get("success"):
+                st.success("ブログ記事の生成が完了しました")
+
+                # タイトル表示
+                st.markdown(f"### {generated_content.get('title', 'タイトル')}")
+
+                # 本文をexpanderで表示
+                with st.expander("生成された記事（全文）", expanded=True):
+                    st.markdown(generated_content.get("content", ""))
+
+                # メタ情報
+                col_meta1, col_meta2 = st.columns(2)
+                with col_meta1:
+                    st.markdown("**メタディスクリプション:**")
+                    st.info(generated_content.get("meta_description", ""))
+                with col_meta2:
+                    st.markdown("**使用キーワード:**")
+                    st.info(", ".join(generated_content.get("used_keywords", [])))
+
+                # ダウンロードボタン
+                st.download_button(
+                    label="記事をダウンロード（Markdown）",
+                    data=f"# {generated_content.get('title', '')}\n\n{generated_content.get('content', '')}",
+                    file_name=f"firefitness_blog_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                    mime="text/markdown"
+                )
+
+                # 投稿処理
+                if should_post and blog_url:
+                    st.divider()
+                    with st.spinner("ブログに投稿中..."):
+                        post_result = post_to_blog(
+                            url=blog_url,
+                            username=blog_username,
+                            password=blog_password,
+                            title=generated_content.get("title", ""),
+                            content=generated_content.get("content", ""),
+                            meta_description=generated_content.get("meta_description", "")
+                        )
+
+                        if post_result.get("success"):
+                            st.success(f"投稿が完了しました！")
+                            if post_result.get("post_url"):
+                                st.markdown(f"[投稿を確認する]({post_result.get('post_url')})")
+                        else:
+                            st.error(f"投稿に失敗しました: {post_result.get('error', '不明なエラー')}")
+            else:
+                st.error(f"記事生成に失敗しました: {generated_content.get('error', '不明なエラー')}")
+
+        except Exception as e:
+            st.error(f"エラーが発生しました: {str(e)}")
+            import traceback
+            st.code(traceback.format_exc())
+
+
+def generate_blog_with_claude(params: dict) -> dict:
+    """Claude APIを使用してブログ記事を生成"""
+    import anthropic
+
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        return {"success": False, "error": "ANTHROPIC_API_KEY が設定されていません"}
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+
+        # プロンプト構築
+        length_guide = {
+            "short": "800〜1200字程度",
+            "medium": "1500〜2000字程度",
+            "long": "2500〜3500字程度"
+        }
+
+        tone_guide = {
+            "professional": "専門的で信頼感のある文体。データや根拠を示しながら説明する。",
+            "friendly": "親しみやすくカジュアルな文体。読者に語りかけるように書く。",
+            "motivational": "やる気を引き出す前向きな文体。読者の行動を促す。",
+            "educational": "わかりやすく教育的な文体。初心者にも理解しやすく説明する。"
+        }
+
+        sections_str = "\n".join([f"- {s}" for s in params.get("sections", [])])
+        keywords_str = ", ".join(params.get("keywords", []))
+
+        prompt = f"""あなたはFIREFITNESS（岡山のパーソナルトレーニングジム）のブログ記事ライターです。
+以下の条件でブログ記事を作成してください。
+
+【FIREFITNESSについて】
+- 岡山市にある完全個室のパーソナルトレーニングジム
+- 「3軸診断」が特徴：姿勢軸・食事軸・継続軸の3つの観点からアプローチ
+- ターゲット：30〜50代の運動初心者、ダイエットに悩む方、姿勢改善したい方
+- 強み：完全個室、マンツーマン指導、続けやすいサポート体制
+
+【記事の条件】
+- カテゴリ: {params.get('category', '')}
+- トピック: {params.get('topic', '')}
+- 記事構成: {params.get('structure', '')}
+- 文体: {tone_guide.get(params.get('tone', 'professional'), '')}
+- 文字数: {length_guide.get(params.get('length', 'medium'), '')}
+
+【記事の構成セクション】
+{sections_str}
+
+【SEOキーワード（自然に含める）】
+{keywords_str}
+
+【追加指示】
+{params.get('additional_instructions', 'なし')}
+
+【出力形式】
+以下のJSON形式で出力してください：
+{{
+    "title": "記事タイトル（SEOを意識した魅力的なタイトル）",
+    "content": "記事本文（Markdown形式、見出しは##や###を使用）",
+    "meta_description": "メタディスクリプション（120文字以内）",
+    "used_keywords": ["実際に使用したキーワードのリスト"]
+}}
+
+{"カスタムタイトル: " + params.get('custom_title') if params.get('custom_title') else "タイトルは自動生成してください。"}
+
+記事はFIREFITNESSの価値観に沿い、読者に価値を提供する内容にしてください。
+最後には必ずCTA（無料カウンセリングへの誘導など）を含めてください。
+"""
+
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=4000,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        response_text = response.content[0].text
+
+        # JSONをパース
+        import json
+        import re
+
+        # JSON部分を抽出
+        json_match = re.search(r'\{[\s\S]*\}', response_text)
+        if json_match:
+            result = json.loads(json_match.group())
+            result["success"] = True
+            return result
+        else:
+            return {
+                "success": True,
+                "title": params.get("topic", "ブログ記事"),
+                "content": response_text,
+                "meta_description": "",
+                "used_keywords": params.get("keywords", [])
+            }
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+def post_to_blog(url: str, username: str, password: str, title: str, content: str, meta_description: str) -> dict:
+    """WordPress REST APIにブログ記事を投稿"""
+    import requests
+
+    try:
+        # WordPress REST API用の認証
+        auth = (username, password)
+
+        # Markdown to HTML変換（簡易）
+        html_content = markdown_to_html(content)
+
+        # 投稿データ
+        post_data = {
+            "title": title,
+            "content": html_content,
+            "status": "draft",  # 下書きとして保存
+            "excerpt": meta_description
+        }
+
+        response = requests.post(
+            url,
+            json=post_data,
+            auth=auth,
+            headers={"Content-Type": "application/json"}
+        )
+
+        if response.status_code in [200, 201]:
+            result = response.json()
+            return {
+                "success": True,
+                "post_id": result.get("id"),
+                "post_url": result.get("link")
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"ステータスコード: {response.status_code}, 詳細: {response.text}"
+            }
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+def markdown_to_html(markdown_text: str) -> str:
+    """MarkdownをHTMLに簡易変換"""
+    import re
+
+    html = markdown_text
+
+    # 見出し
+    html = re.sub(r'^### (.+)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
+    html = re.sub(r'^## (.+)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
+    html = re.sub(r'^# (.+)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
+
+    # 太字
+    html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
+
+    # リスト
+    html = re.sub(r'^- (.+)$', r'<li>\1</li>', html, flags=re.MULTILINE)
+    html = re.sub(r'(<li>.*</li>\n?)+', r'<ul>\g<0></ul>', html)
+
+    # 段落
+    paragraphs = html.split('\n\n')
+    html = '\n'.join([f'<p>{p}</p>' if not p.startswith('<') else p for p in paragraphs if p.strip()])
+
+    return html
 
 
 # =====================================
@@ -2229,13 +3095,16 @@ ANTHROPIC_API_KEY=your_anthropic_api_key
         return
 
     # モード選択タブ
-    tab1, tab2 = st.tabs(["宣材写真", "SNS投稿"])
+    tab1, tab2, tab3 = st.tabs(["宣材写真", "SNS投稿", "ブログ投稿"])
 
     with tab1:
         render_promo_photo_mode()
 
     with tab2:
         render_sns_post_mode()
+
+    with tab3:
+        render_blog_post_mode()
 
     # フッター
     st.markdown('''

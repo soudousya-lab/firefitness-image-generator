@@ -365,7 +365,8 @@ FIREFITNESSというパーソナルトレーニングジムのマーケティン
     # ユーザーメッセージを構築
     user_message = f"""以下の条件で画像生成プロンプトを作成してください：
 
-【店舗】{location}店（背景画像を参照して使用）
+【店舗】{location}店
+【背景画像の使用方法】参照される背景画像の内装・家具・機材の配置を完全に維持し、一切変更しない。人物のみをその空間に配置する。
 【シチュエーション】{situation}
 - シーン: {situation_info['scene']}
 - アクション: {situation_info['action']}
@@ -375,7 +376,7 @@ FIREFITNESSというパーソナルトレーニングジムのマーケティン
 """
 
     if trainer_name:
-        user_message += f"- トレーナー: {trainer_name}（参照画像のトレーナーを登場させる。特徴を維持すること）\n"
+        user_message += f"- トレーナー: {trainer_name}（複数の参照画像が提供される。顔の特徴を完全に再現すること。ポーズは自由だが、顔は同一人物と即座に認識できるレベルで再現する）\n"
 
     if client_desc:
         user_message += f"- クライアント: {client_desc}\n"
@@ -399,11 +400,12 @@ FIREFITNESSというパーソナルトレーニングジムのマーケティン
 
     user_message += """
 【重要な注意事項】
-1. 参照画像（背景・トレーナー）がある場合、それらを活かしたプロンプトにする
-2. 「この背景を使用」「このトレーナーの外見を維持」という指示を含める
+1. 【背景固定】参照背景画像がある場合、その部屋の内装・家具・設備を一切動かさず、人物のみを配置する指示を含める
+2. 【顔の完全再現】トレーナー参照画像がある場合、顔の特徴（輪郭、目、鼻、口、肌色、髪型）を完全に再現する指示を含める。ポーズは変えてよいが、顔は同一人物と認識できるレベルで再現する
 3. 日本のパーソナルジムらしい雰囲気を出す
 4. 自然光、清潔感を強調
 5. 絶対にNGワード（muscular, intense, extreme, sweat, screaming等）を使わない
+6. 「背景の家具や機材は参照画像と完全に同じ位置に保つ」という指示を必ず含める
 """
 
     # Claude API 呼び出し
@@ -962,8 +964,10 @@ def build_simple_prompt(generation_input: Dict[str, Any]) -> str:
                 "warm and inviting atmosphere, high quality, detailed, realistic.")
 
     # 参照画像の指示
-    parts.append("Use the provided background image as the setting. "
-                "If trainer reference images are provided, maintain their exact facial features and appearance.")
+    parts.append("CRITICAL: Use the provided background image as the EXACT setting - DO NOT move, add, or remove ANY furniture or equipment. "
+                "Keep all interior elements in their EXACT original positions. Only add people to this unchanged space. "
+                "If trainer reference images are provided, reproduce their face with EXACT accuracy - "
+                "same face shape, eyes, nose, mouth, skin tone, and hairstyle. The person must be immediately recognizable.")
 
     return " ".join(parts)
 
